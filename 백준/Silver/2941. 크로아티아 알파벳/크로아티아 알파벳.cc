@@ -9,33 +9,31 @@ int main() {
 
     size = strlen(a); //문자열 구하기
 
-    for (int i = 0; i < size; i++) {
+    for (int i = 0; i < strlen(a); i++) {
         if (a[i] == 'c' && (a[i+1] == '=' || a[i+1] == '-')) {
-            sum++;
-            i++;//c= c-
+            size--;
         }
         else if (a[i] == 'd' && a[i + 1] == 'z' && a[i + 2] == '=') {
-            sum ++;
-            i+=2;//dz= 
+            size-=2;
+                
         }
         else if (a[i-1] != 'd' && a[i] == 'z' && a[i + 1] == '=') {
-            sum++;
-            i++;//z=
+            size--;//z를 기준으로 하기때문에 이놈은 a[i-1]로 설정
+           
         }
         else if (a[i] == 'd' && a[i + 1] == '-') {
-            sum++;
-            i++;
+            size--;
+          
         }
         else if ((a[i] == 'l' || a[i] == 'n') && a[i+1] == 'j') {
-            sum++;
-            i++;
+            size--;
+           
         }
         else if (a[i] == 's' && a[i+1] == '=') {
-            sum++;
-            i++;
+            size--;
         }
-        else sum++;
+        
     }
-        printf("%d", sum);
+        printf("%d", size);
     return 0;
 }
