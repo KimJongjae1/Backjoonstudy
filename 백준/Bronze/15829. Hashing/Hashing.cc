@@ -1,17 +1,18 @@
 #include <stdio.h>
-#include <string.h>
-#include <math.h>
+#define r 31
+#define M 1234567891
 
-int main() {//a 97//int 4바이트 char가 1바이트
-    char s[51];
-    int L,x;
-    scanf("%d", &L);
-    scanf("%s", s);
-    x = (int)strlen(s);
-    double ans = 0;
-    for (int i = 0; i < x; i++) {
-        ans += (s[i] - 96) * (int)pow(31, i);
+int main () {
+    int l, i;
+    char arr[51];
+    long long hash = 0, R = 1;
+
+    scanf("%d %s", &l, arr);
+
+    for (i = 0; i < l; i++) {
+        hash += ((arr[i] - 'a' + 1) * R) % M; hash %= M;
+        R *= r; R %= M;
     }
-    printf("%0.0f", ans);
-        return 0;
+    printf("%lld", hash % M);
+    return 0;
 }
