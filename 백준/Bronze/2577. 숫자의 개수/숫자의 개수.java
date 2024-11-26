@@ -13,17 +13,16 @@ public class Main {
 	int x=A*B*C;
 	
 	String S = Integer.toString(x);
-	char[] s = S.toCharArray();
-	char[] ans=new char[10];
-	Arrays.fill(ans,'0');
 	
-	for(int i=0;i<s.length;i++) {
-		ans[s[i]-'0']++;
-	}
 	for(int i=0;i<10;i++) {
-		System.out.println(ans[i]); 
+		int count =0;
+		for(int k=0;k<S.length();k++) {
+			if((S.charAt(k)-'0')== i) {
+				count++;
+			}
+		}System.out.println(count);
 	}
-		
+	
 	
 	}
 }
