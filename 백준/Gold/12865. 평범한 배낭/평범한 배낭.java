@@ -1,49 +1,40 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-	static int[] w;
-	static int[] v;
-	static Integer[][] dp;
-	public static void main(String args[]) throws Exception{
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		
-		StringTokenizer st =new StringTokenizer(br.readLine());
-		
-		int N=Integer.parseInt(st.nextToken());
-		int K=Integer.parseInt(st.nextToken());
-		
-		w=new int[N+1];
-		v=new int[N+1];
-		dp=new Integer[N+1][K+1];
-		for(int i=1;i<=N;i++) {
-			st =new StringTokenizer(br.readLine());
-			w[i]=Integer.parseInt(st.nextToken());
-			v[i] =Integer.parseInt(st.nextToken());
-			
-		}
-		System.out.println(dppack(N,K));
-	}
-	static int dppack(int i,int k) {
-		if(i<1) return 0;
-		
-		if(dp[i][k]==null) {
-			
-			
-			if(w[i]>k) {
-				dp[i][k]=dppack(i-1,k);
-			}else {
-				dp[i][k]=Math.max(dppack(i-1,k),dppack(i-1,k-w[i])+v[i] );			
-			}
-			
-		}
-		
-		
-		
-		
-		return dp[i][k];
-	}
-	
-	
-}
+    static int N;
+    static int K;
+    static int[][] cost;
+    static int[][] dp;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st=new StringTokenizer(br.readLine());
+        N=Integer.parseInt(st.nextToken());
+        K=Integer.parseInt(st.nextToken());
+        cost=new int[N+1][2];
+        for(int i=1;i<=N;i++) {
+        	 st=new StringTokenizer(br.readLine());
+        	 int a =Integer.parseInt(st.nextToken());
+             int b=Integer.parseInt(st.nextToken());
+        	 cost[i][0]=a;
+        	 cost[i][1]=b;
+             
+        }
+        
+    	dp=new int[N+1][K+1];
+    	
+    	for(int i=1;i<=K;i++) {//x좌표
+    		for(int k=1;k<=N;k++) {//y좌표
+    			if(i-cost[k][0]>=0) {
+    				dp[k][i]=Math.max(cost[k][1]+dp[k-1][i-cost[k][0]], Math.max(dp[k-1][i], dp[k][i-1]));
+    			}else {
+    				dp[k][i]=Math.max(dp[k-1][i], dp[k][i-1]);
+    			}
+    			
+    		}
+    	}
+    	System.out.println(dp[N][K]);
+    } 
+   
+    
+ }
