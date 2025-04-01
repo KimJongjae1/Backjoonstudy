@@ -1,72 +1,83 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-	  static int[] dix= {0,0,1,1};
-	  static int[] diy= {0,1,0,1};
-	  static int N;
-	  static int ans=0;
-	  public static void move(int[][] a, int r,int c,int status) {
-		
-          if(r==N-1&&c==N-1) {
-        	  ans++;
-        	  return;
-          }
-		  
-		  for(int i=1;i<=3;i++) {
-			  int Y=r+diy[i];
-			  int X=c+dix[i];
-			  
-			  if(Y>=N||X>=N)  continue;    
-			 
-			   if(status==2&&i!=1) { 
-				 if(i==2&&a[Y][X]==1) continue; 
-				 else if(i==3&&(a[r+1][c]==1||a[r][c+1]==1||a[Y][X]==1)) continue;
-				 
-				 move(a,Y,X,i); 
-				}
-			   
-			   else if(status ==1&&i!=2) { 
-				   if(i==1&&a[Y][X]==1) continue; 
-					 else if(i==3&&(a[r+1][c]==1||a[r][c+1]==1||a[Y][X]==1)) continue;
-			   
-				   move(a,Y,X,i); 
-			   }
-			   
-			   else if(status==3) {
-				   if(i==2&&a[Y][X]==1) continue; 
-				   else if(i==1&&a[Y][X]==1) continue; 
-				   else if(i==3&&(a[r+1][c]==1||a[r][c+1]==1||a[Y][X]==1)) continue;
-				   
-			   move(a,Y,X,i); 
-			   }
-			  
-		
-		  }
-	  }
-	
-	
-     public static void main(String[] args)throws Exception {
-     BufferedReader br =new BufferedReader(new InputStreamReader(System.in));
-     N=Integer.parseInt(br.readLine());	 
-     
-     int[][] arr = new int[N][N];
-     for(int i=0;i<N;i++) {
-    	 StringTokenizer st = new StringTokenizer(br.readLine());
-    	 for(int k=0;k<N;k++) {
-    		 arr[i][k]=Integer.parseInt(st.nextToken());
-    	 }
-     }
-    
-     move(arr,0,1,2);
-     
-     System.out.println(ans);
-     
-     
-    
+    static int N;   
+    static int[][] arr;
+    static int cnt=0;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        N=Integer.parseInt(br.readLine());
+        arr=new int[N][N];
+        
+        for(int i=0;i<N;i++) {
+        	StringTokenizer st =new StringTokenizer(br.readLine());
+        	for(int k=0;k<N;k++) {
+        		arr[i][k]=Integer.parseInt(st.nextToken());
+        	}
+        }
+        if(arr[N-1][N-1]==1) {
+        	System.out.println(0);
+        	return;
+        }
+        dfs(0,1,0);
+        System.out.println(cnt);
+        
+        
     }
     
-     
-}
+    static void dfs(int y,int x,int direct) {//0==가로 1==세로 2==대각선
+ 
+    	     if(y==N-1&&x==N-1) {
+    	    	 cnt++;
+    	    	return;
+    	     }
+    		
+    	     if(direct==0) {
+    	    	if(x+1<N) {
+    	    		if(arr[y][x+1]!=1) dfs(y,x+1,0);
+    	    	}
+    	    	 
+    	    	if(x+1<N&&y+1<N) {
+    	    		if(check(y,x))  dfs(y+1,x+1,2);
+    	    	}
+    	    	
+    	     }
+    	     else if(direct==1) {
+    	    	 if(y+1<N) {
+     	    		if(arr[y+1][x]!=1)  dfs(y+1,x,1);
+     	    	}
+     	    	 
+     	    	if(x+1<N&&y+1<N) {
+     	    		if(check(y,x))  dfs(y+1,x+1,2);
+     	    	}
+    	    	 
+    	     }
+    	     else {
+    	    	 if(y+1<N) {
+      	    		if(arr[y+1][x]!=1)  dfs(y+1,x,1);
+      	    	}
+    	    	 
+    	    	 if(x+1<N) {
+     	    		if(arr[y][x+1]!=1)  dfs(y,x+1,0);
+     	    	}
+      	    	 
+      	    	if(x+1<N&&y+1<N) {
+      	    		if(check(y,x)) dfs(y+1,x+1,2);
+      	    	}
+    	     }
+    	}
+    	
+    	
+    
+    public static boolean check(int y,int x) {
+    	
+    	if(arr[y][x+1]==1||arr[y+1][x]==1||arr[y+1][x+1]==1)
+    		return false;
+   
+    	return true;
+    }
+    
+  }
+ 
