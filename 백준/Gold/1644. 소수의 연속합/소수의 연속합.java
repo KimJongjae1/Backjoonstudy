@@ -12,22 +12,24 @@ public class Main {
 			 
 			 N=Integer.parseInt(st.nextToken());
 			 int[] prime=new int[N+1];
-			 prime[0]=2;
-			 int idx=1;
-			 Loop:for(int i=3;i<=N;i++) {
-				 int num=(int)Math.sqrt(i);
-				 
-				 for(int k=2;k<=num;k++) {
-					if(i%k==0) {
-						continue Loop;
-					}
+			 int[] temp=new int[N+1];
+			 
+			 for(int i=2;i<=N;i++) {
+				 temp[i]=i;
+			 }
+			 int sq=(int)Math.sqrt(N);
+			 for(int i=2;i<=sq;i++) {
+				 if(temp[i]!=0) {
+					 for(int k=i+i;k<=N;k+=i) {
+						 temp[k]=0;
+					 }
 				 }
-				 prime[idx]=i;
-				 if(prime[idx]>=N) {
-					 idx++;
-					 break;
+			 }
+			 int idx=0;
+			 for(int i=2;i<=N;i++) {
+				 if(temp[i]!=0) {
+					 prime[idx++]=temp[i];
 				 }
-				 idx++;
 			 }
 			
 			 int start=0;
