@@ -29,16 +29,20 @@ public class Main {
         	int order=Integer.parseInt(st.nextToken());
         	
         	if(order==3) {
-        		if (set.isEmpty()) {
-        		    sb.append("-1\n");
-        		    continue;
+        		if(set.isEmpty()) {
+        			sb.append(-1).append("\n"); continue;
         		}
-        		Integer next = set.ceiling(start);
-        		if (next != null) {
-        		    sb.append(next - start).append("\n");
-        		} else {
-        		    int first = set.first(); // 🔄 정확한 순환 거리 계산
-        		    sb.append(N - start + first).append("\n");
+        		
+        		Integer popular=set.ceiling(start);
+        		if(popular==null) {
+        			popular=set.higher(0);
+        			int range=popular-start;
+        			if(range<0) range+=N;
+        			sb.append(range).append("\n");
+        			
+        		}else {
+        			int range=popular-start;
+        			sb.append(range).append("\n");
         		}
         	}
         	else if(order==2) {
