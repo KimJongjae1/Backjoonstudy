@@ -19,7 +19,9 @@ public class Main {
         	if(a[0]!=b[0]) return Long.compare(a[0],b[0]);
         	else return Long.compare(b[1],a[1]);
         	}});
-        TreeMap<Long,Long> map=new TreeMap<>();
+        
+        PriorityQueue<Long> sepq=new PriorityQueue<>();
+    
         for(int i=0;i<N;i++) {
         	 st=new StringTokenizer(br.readLine());
         	long dead=Long.parseLong(st.nextToken());
@@ -27,31 +29,22 @@ public class Main {
         	pq.offer(new long[] {dead,cup});
         }
         
-        long ret=pq.poll()[1];
-        map.put(ret, 1L);
-        int size=1;
+ 
+        long ret=0;
         while(!pq.isEmpty()) {
         	long[] pro=pq.poll();
         	
-        	if(size<pro[0]) {
-        		size++;
-        		ret+=pro[1];
-        	
-        		map.putIfAbsent(pro[1], 0L);
-        		map.put(pro[1], map.get(pro[1])+1);
+        	if(sepq.size()<pro[0]) {
+        		ret+=pro[1];	
+        		sepq.offer(pro[1]);
         	}else {
-        		Long low=map.lowerKey(pro[1]);
-        		if(low==null) continue;
-        		else {
-        			low=map.firstKey();
+        		Long low=sepq.peek();
+        		if(low<pro[1]) {
+        			sepq.poll();
+        			sepq.offer(pro[1]);
         			ret-=low;
-        			long num=map.get(low);
-        			if(num==1) map.remove(low);
-        			else map.put(low, num-1);
-        			
         			ret+=pro[1];
-        			map.putIfAbsent(pro[1], 0L);
-            		map.put(pro[1], map.get(pro[1])+1);
+        			
         		}
         	}
         	
