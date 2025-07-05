@@ -39,7 +39,7 @@ public class Main {
         		arr[team]+=num;
         	}else {
         		int soldier=Integer.parseInt(st.nextToken());
-        		sb.append(lowerbound(soldier)).append("\n");
+        		sb.append(find(1,N,1,soldier)).append("\n");
         	}
         	
         }
@@ -66,34 +66,20 @@ public class Main {
     	change(start,mid,idx*2,team,diff);
     	change(mid+1,end,idx*2+1,team,diff);	 
      }
-     public static int lowerbound(int soldier) {
-    	 int max=N;
-    	 int min=1;
-    	 while(min<max) {
-    		 int mid=(max+min)/2;
+     public static int find(int start,int end,int idx,int soldier) {
+    	 if(start==end) 
+    		 return start;
+    	 
+    		 int mid=(start+end)/2;
     		 
-    		 if(print(1,N,1,1,mid)<soldier) {
-    			 min=mid+1;
+    		 if(tree[2*idx]>=soldier) {
+    			 return find(start,mid,idx*2,soldier);
     		 }else {
-    			 max=mid;
+    			 return find(mid+1,end,idx*2+1,soldier-(int)tree[idx*2]);
     		 }
     		 
-    	 }
-    	 return min;
-     }
-     public static long print(int start,int end,int idx,int ts,int team) {
-    	 if(team<start||end<ts) {
-    		 return 0;
-    	 }
     	 
-    	 if(ts<=start&&end<=team) {
-    		 return tree[idx];
-    	 }
-    	 
-    	 int mid=(start+end)/2;
-    	 return print(start,mid,2*idx,ts,team)+print(mid+1,end,2*idx+1,ts,team);
-    	 
+    		 
      }
      
 }
-
