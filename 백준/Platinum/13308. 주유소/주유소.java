@@ -31,7 +31,7 @@ public class Main {
             list[e].add(new int[]{s,c});
         }
         dij();
-        long ret=Integer.MAX_VALUE;
+        long ret=Long.MAX_VALUE;
     for(int i=1;i<=2500;i++){
         ret=Math.min(ret,cost[N][i]);
     }
@@ -50,7 +50,7 @@ public class Main {
         pq.offer(new long[]{1,0,oil[1]});
         cost=new long[N+1][2501];
         for(int i=1;i<=N;i++) {
-            Arrays.fill(cost[i], Integer.MAX_VALUE);
+            Arrays.fill(cost[i],Long.MAX_VALUE);
         }
         cost[1][oil[1]]=0;
         while(!pq.isEmpty()){
@@ -61,10 +61,10 @@ public class Main {
             if(cost[cur][(int)now[2]]<c) continue;
 
             for(int[] next:list[cur]){
-                
+
                 if(cost[next[0]][(int)now[2]]>c+now[2]*next[1]){
                     cost[next[0]][(int)now[2]]=c+now[2]*next[1];
-                
+
 
                     if(now[2]<oil[next[0]])
                     pq.offer(new long[]{next[0],cost[next[0]][(int)now[2]],now[2]});
