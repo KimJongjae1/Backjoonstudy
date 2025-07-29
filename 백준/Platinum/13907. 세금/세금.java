@@ -57,32 +57,30 @@ public class Main {
         System.out.println(sb);
     }
     public static void dij(int s,int e){
-        PriorityQueue<int[]> pq=new PriorityQueue<>(new Comparator<int[]>(){
-            @Override
-            public int compare(int[] a,int[] b){
-                if(a[1]!=b[1]) return a[1]-b[1];
-                else if(a[2]!=b[2]) return a[2]-b[2];
-                else return a[0]-b[0];
-            }
-        });
-        pq.offer(new int[]{s,0,0});
+        Queue<int[]> qu= new LinkedList<>();
+        qu.offer(new int[]{s,0,0});
         dist=new int[N+1][N+1];
         for(int i=1;i<=N;i++) {
             Arrays.fill(dist[i],Integer.MAX_VALUE);
         }
+        int[] dist2=new int[N+1];
+        Arrays.fill(dist2,Integer.MAX_VALUE);
+        dist2[s]=0;
         dist[s][0]=0;
-        while(!pq.isEmpty()){
-            int[] now=pq.poll();
+        while(!qu.isEmpty()){
+            int[] now=qu.poll();
             int cost=now[1];
             int roadquantity=now[2];
 
             if(dist[now[0]][roadquantity]<cost)continue;
-            if(roadquantity>=N||now[0]==e) continue;
+            if(roadquantity>=N) continue;
 
             for(int[] next:list[now[0]]){
                 if(dist[next[0]][roadquantity+1]>cost+next[1]){
+                	if(dist2[next[0]]<=next[1]+cost) continue;
                     dist[next[0]][roadquantity+1]=cost+next[1];
-                    pq.offer(new int[]{next[0],dist[next[0]][roadquantity+1],roadquantity+1});
+                    dist2[next[0]]=next[1]+cost;
+                    qu.offer(new int[]{next[0],dist[next[0]][roadquantity+1],roadquantity+1});
                 }
 
             }
