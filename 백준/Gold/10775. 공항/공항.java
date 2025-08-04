@@ -5,29 +5,43 @@ import java.util.TreeSet;
 
 public class Main {
     static int N;
+    static int[] parent;
+    static int find(int a) {
+    	if(parent[a]==a) return a;
+    	else return parent[a]=find(parent[a]);
+    }
+    static void unit(int a,int b) {
+    	int A=find(a);
+    	int B=find(b);
+    	
+    	parent[A]=B;
+    }
+    
     public static void main(String[] args) throws Exception {
         BufferedReader br= new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st=new StringTokenizer(br.readLine()) ;
 
         N=Integer.parseInt(st.nextToken());
-     
-       // StringBuilder sb=new StringBuilder();
-        TreeSet<Integer> set=new TreeSet<>();
+        parent=new int[N+1];
         for(int i=1;i<=N;i++) {
-        	set.add(i);
+        	parent[i]=i;
         }
-       int cnt=0;
-    	int P=Integer.parseInt(br.readLine());
-    	for(int i=0;i<P;i++) {
-    		Integer a=Integer.parseInt(br.readLine());
-    		if(set.contains(a))set.remove(a);
-    		else {
-    			a=set.lower(a);
-    			if(a==null) break;
-    			else set.remove(a);
-    		}
-    		cnt++;
-    	}
-    	System.out.println(cnt);
+        int cnt=0;
+       // StringBuilder sb=new StringBuilder();
+        int M=Integer.parseInt(br.readLine());
+        for(int i=0;i<M;i++) {
+        	int a=Integer.parseInt(br.readLine());
+        	
+     
+        	if(find(a)==0)break;
+        	else {
+        		unit(a,parent[a]-1);
+        	}
+        	
+        	
+        	cnt++;
+        }
+        System.out.println(cnt);
+        
     }
 }
