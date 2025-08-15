@@ -12,21 +12,15 @@ import java.util.TreeSet;
 
 public class Main { 
     static int N;
-    static int[] team;
-    static Set<Integer>[] set;
     static List<Integer>[] list;
-    static int[] dist;
-    static int[][] parent;
-    static int log;
+    static int[] subtree;
     public static void main(String[] args) throws Exception {
     	StringBuilder sb=new StringBuilder();
         BufferedReader br= new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st=new StringTokenizer(br.readLine()) ;
 
         N=Integer.parseInt(st.nextToken());
-        team=new int[N+1];
-       log=(int)Math.ceil(Math.log(N)/Math.log(2))+1;
-        parent=new int[N+1][log];
+
         list=new ArrayList[N+1];
         for(int i=1;i<=N;i++) {
         	list[i]=new ArrayList<>();
@@ -39,74 +33,31 @@ public class Main {
         	 list[a].add(b);
         	 list[b].add(a);
         }
-        
-        bfs();
-
-        for(int i=1;i<log;i++) {
-        	for(int k=1;k<=N;k++) {
-        		parent[k][i]=parent[parent[k][i-1]][i-1];
-        	}
-        }
-        
-        
-        
+        subtree=new int[N+1];
         long ret=0;
+        DFS(1,1);
+        long temp=N;
+        long n=temp*(temp-1)/2;
         for(int i=2;i<=N;i++) {
-        	ret+=dist[i];
-        }
-        
-        for(int i=2;i<N;i++) {
-        	for(int k=i+1;k<=N;k++) {
-        		int par=LCA(i,k);
-        		int ItoKdist=dist[i]+dist[k]-dist[par];
-        		
-        		ret+=ItoKdist;
-        	}
+        	ret+=n-caculate((long)(N-subtree[i]));
         }
         System.out.println(ret);
     }
-    public static void bfs() {
-    	Queue<int[]> qu=new LinkedList<>();
-    	qu.offer(new int[] {1,1});
-    	dist=new int[N+1];
-    	while(!qu.isEmpty()) {
-    		int[] now=qu.poll();
-    		
-    		for(int next:list[now[0]]) {
-    			if(next==now[1]) continue;
-    			parent[next][0]=now[0];
-    			dist[next]=dist[now[0]]+1;
-    			qu.offer(new int[] {next,now[0]});
-    		}
-    	}
+    public static long caculate(long n) {
+    	return n*(n-1)/2;
     }
-    public static int LCA(int n1,int n2) {
-    	int a=n1;
-    	int b=n2;
-    	if(dist[a]<dist[b]) {
-    		int temp=a;
-    		a=b;
-    		b=temp;
+    
+    public static int DFS(int cur,int par) {
+    	subtree[cur]=1;
+    
+    	for(int next:list[cur]) {
+    		if(next==par) continue;
+    		subtree[cur]+=DFS(next,cur);
     	}
+    	return subtree[cur];
     	
-    	for(int i=log-1;i>=0;i--) {
-    		if(dist[a]-dist[b]>=(1<<i)) {
-    			a=parent[a][i];
-    		}
-    	}
+    }
 
-    	if(a==b) return a;
-    	
-    	for(int i=log-1;i>=0;i--) {
-    		if(parent[a][i]!=0&&parent[a][i]!=parent[b][i]) {
-    			a=parent[a][i];
-    			b=parent[b][i];
-    		}
-    	}
-    	return parent[a][0];
-    }
-    
-    
     
   }
  
