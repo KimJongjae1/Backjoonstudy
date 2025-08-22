@@ -12,74 +12,47 @@ public class Main {
         StringBuilder sb=new StringBuilder();
         StringTokenizer st=new StringTokenizer(br.readLine());
     	  N=Integer.parseInt(st.nextToken());
-    	  Stack<int[]> stack=new Stack();
+    	  Stack<Integer> stack=new Stack();
 
     	  st=new StringTokenizer(br.readLine());
     	  int[] building=new int[N+1];
-    	  int[][] ret=new int[N+1][2];
+    	  int[] idx=new int[N+1];
     	  int[] cnt=new int[N+1];
     	  for(int i=1;i<=N;i++) {
     		  building[i]=Integer.parseInt(st.nextToken());
+    		  idx[i]=-1000000;
     	  }
-    	  for(int i=1;i<=N;i++) {
-      		 ret[i][1]=Integer.MAX_VALUE;
-      	 }
-    	  stack.push(new int[] {building[N],N});
+    	 
     
-    	  for(int i=N-1;i>=1;i--) {
-    		  int[] max=stack.peek();
-       		  if(max[0]<=building[i]) {
+    	  for(int i=1;i<=N;i++) {
+    		  while(!stack.isEmpty()&&building[stack.peek()]<=building[i]) {
     			  stack.pop();
-    			  while(!stack.isEmpty()&&stack.peek()[0]<=building[i] ) {
-    				  stack.pop();
-    			  }
-    			  if(!stack.isEmpty()) max=stack.peek();
-    			  else{
-    				  stack.push(new int[] {building[i],i});
-    				  continue;
-    			  }
     		  }
+    		  
+    		  cnt[i]+=stack.size();
+    		  if(cnt[i]>0) idx[i]=stack.peek();
+    		  stack.push(i);
 
-    			ret[i][0]=max[0];
-    			ret[i][1]=max[1];
-    			cnt[i]+=stack.size();
-   
-    	    	stack.push(new int[] {building[i],i});
-    			 
-    			
     	  }
   
-    	
     	  stack.clear();
-     	  stack.push(new int[] {building[1],1});
-    	  for(int i=2;i<=N;i++) {
-    		  int[] max=stack.peek();
-    		  if(max[0]<=building[i]) {
+    	  for(int i=N;i>=1;i-- ) {
+    		  while(!stack.isEmpty()&&building[stack.peek()]<=building[i]) {
     			  stack.pop();
-    			  while(!stack.isEmpty()&&stack.peek()[0]<=building[i] ) {
-    				  stack.pop();
-    			  }
-    			  if(!stack.isEmpty()) max=stack.peek();
-    			  else{
-    				  stack.push(new int[] {building[i],i});
-    				  continue;
-    			  }
     		  }
-    		
-    		if(ret[i][1]-i>=i-max[1]) {  
-    			ret[i][0]=max[0];
-    			ret[i][1]=max[1];
-    		}
-    		cnt[i]+=stack.size();
-  		
-  	    	stack.push(new int[] {building[i],i});
+    		  
+    		  if(!stack.isEmpty()&&stack.peek()-i<i-idx[i]) {
+    			  idx[i]=stack.peek();
+    		  }
+    		  cnt[i]+=stack.size();
+    	
+    		  stack.push(i);
   			 
     		  
     	  }
     	  
     	 for(int i=1;i<=N;i++) {
-    		 if(ret[i][1]!=Integer.MAX_VALUE)
-    		 sb.append(cnt[i]+" "+ret[i][1]).append("\n");
+    		 if(cnt[i]>0) sb.append(cnt[i]+" "+idx[i]).append("\n");
     		 else  sb.append(0).append("\n");
     	 }
     	 System.out.println(sb);
