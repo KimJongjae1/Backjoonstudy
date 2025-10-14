@@ -17,34 +17,31 @@ public class Main {
         StringTokenizer st=new StringTokenizer(br.readLine());
         sb=new StringBuilder();;
      	N=Integer.parseInt(st.nextToken());//나무 수
-    	PriorityQueue<Integer> min=new PriorityQueue<>(Collections.reverseOrder());
-     	PriorityQueue<Integer> max=new PriorityQueue<>();
+
 
      	st=new StringTokenizer(br.readLine());
+     	arr=new int[N];
      	for(int i=0;i<N;i++) 
-     		max.offer(Integer.parseInt(st.nextToken()));
+     		arr[i]=Integer.parseInt(st.nextToken());
      	
-
+     	Arrays.sort(arr);
    		
    		int n=N/2;
-   		while(max.size()>n) {
-   			min.offer(max.poll());
-   		}
+   		
 
-   		int cnt=0;
-   		while(!min.isEmpty()) {
-   			M=min.poll();
-   			
-   			for(int i=30;i>=0;i--) {
-   				if((M&(1<<i))>0) {
+   		int cnt=1;
+   		if(N%2==0)n--;
+   		for(int i=0;i<=n;i++) {
+   			for(int k=30;k>=0;k--) {
+   				if((arr[i]&(1<<k))>0) {
 
-   					cnt+=i;
+   					cnt+=k;
    					break;
    				}
    			}
-   			
    		}
-     	cnt++;
+   
+
      	System.out.println(cnt);
      	
     }
