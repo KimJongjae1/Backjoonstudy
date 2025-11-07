@@ -1,45 +1,35 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.Stack;
-import java.util.StringTokenizer;
-
+import java.io.*;
+import java.util.*;
 
 public class Main {
-   static int N;
-   static int M;
-   static  StringBuilder sb;
-   static int[] arr;
-   static char[] carr;
     public static void main(String[] args) throws Exception {
-        BufferedReader br= new BufferedReader(new InputStreamReader(System.in));
-       StringTokenizer st=new StringTokenizer(br.readLine());
-        sb=new StringBuilder();
-      
-        N=Integer.parseInt(st.nextToken());
-        M=Integer.parseInt(st.nextToken());
-        arr=new int[M];
-        st=new StringTokenizer(br.readLine());
-      
-        for(int i=0;i<M;i++) {
-        	arr[i]=Integer.parseInt(st.nextToken());
-        }
-        
-       int ans=0;
-       for(int i=1;i<M-1;i++) {
-    	    int leftmax=0;
-            int rightmax=0;
-            
-            for(int k=0;k<=i-1;k++)
-            	leftmax=Math.max(leftmax,arr[k]);
-            
-            for(int k=i+1;k<M;k++)
-            	rightmax=Math.max(rightmax,arr[k]);
-    	   
-            int H=Math.min(leftmax, rightmax);
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int H = Integer.parseInt(st.nextToken());
+        int W = Integer.parseInt(st.nextToken());
+        st = new StringTokenizer(br.readLine());
+        int[] h = new int[W];
+        for (int i = 0; i < W; i++) h[i] = Integer.parseInt(st.nextToken());
 
-            if(H>arr[i])
-            ans+=H-arr[i];
-       }
+        if (W < 3) { System.out.println(0); return; }
+
+        int l = 0, r = W - 1;
+        int maxL = h[l], maxR = h[r];
+        int ans = 0;
+
+        while (l < r) {
+            if (maxL <= maxR) {
+                l++;
+                if (l >= r) break;
+                maxL = Math.max(maxL, h[l]);
+                ans += Math.max(0, maxL - h[l]);
+            } else {
+                r--;
+                if (l >= r) break;
+                maxR = Math.max(maxR, h[r]);
+                ans += Math.max(0, maxR - h[r]);
+            }
+        }
         System.out.println(ans);
     }
 }
