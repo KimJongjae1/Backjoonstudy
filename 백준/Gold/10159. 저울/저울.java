@@ -25,24 +25,16 @@ public class Main {
         M= Integer.parseInt(br.readLine());
         
      int[][] big=new int[N+1][N+1];
-     int[][] small=new int[N+1][N+1];
+    
         for(int i=0;i<M;i++) {
         	st = new StringTokenizer(br.readLine());	
         	int Big=Integer.parseInt(st.nextToken());
         	int Small=Integer.parseInt(st.nextToken());
         	
         	big[Big][Small]=1;
-        	small[Small][Big]=1;
+        	big[Small][Big]=-1;
         }
-//        
-//        for(int i=1;i<=N;i++) {
-//        	for(int k=1;k<=N;k++) {
-//        		System.out.print(big[i][k]+" ");
-//        	}
-//        	System.out.println();
-//        }
-//        System.out.println();
-        
+
         
         
         for(int i=1;i<=N;i++) {
@@ -51,8 +43,8 @@ public class Main {
         			if(big[k][i]==big[i][q]&&big[k][i]==1) {
         				big[k][q]=1;
         			}
-        			if(small[k][i]==small[i][q]&&small[k][i]==1) {
-        				small[k][q]=1;
+        			if(big[k][i]==big[i][q]&&big[k][i]==-1) {
+        				big[k][q]=-1;
         			}
         		}
         	}
@@ -62,7 +54,7 @@ public class Main {
         	int cnt=0;
         	for(int k=1;k<=N;k++) {
         		if(big[i][k]==1)cnt++;
-        		if(small[i][k]==1)cnt++;
+        		if(big[i][k]==-1)cnt++;
         	}
    
         	sb.append((N-cnt-1)+"\n");
