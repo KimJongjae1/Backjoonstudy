@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -48,20 +47,21 @@ public class Main {
     	   map.putIfAbsent(n, new ArrayList<Integer>());
     	   map.get(n).add(a*N+b);
        }
-       int ret=BFS();
+       BFS();
        
-      
+       for(int i=0;i<N;i++) {
+    	   for(int k=0;k<N;k++) {
+    		   if(arr[i][k]==1)ans++;
+    	   }
+       }
 
        
-       System.out.println(ret+1);
+       System.out.println(ans);
     }
-    public static int BFS() {
+    public static void BFS() {
     	Queue<int[]> qu=new LinkedList<>();
     	CheckIfLight=new LinkedList<>();
     	qu.offer(new int[] {0,0});
-    	for(int i=0;i<N;i++)Arrays.fill(visit[i], false);
-    	int cnt=0;
-    	boolean ON=false;
     	visit[0][0]=true;
     	while(!qu.isEmpty()) {
     		int[] cur=qu.poll();
@@ -71,9 +71,7 @@ public class Main {
 	    		for(int lightRoom:map.get(n)) {
 	    			int y=lightRoom/N;
 	    			int x=lightRoom%N;
-	    			if(arr[y][x]==1)continue;
-	    			cnt++;
-	    			ON=true;
+
 	    			arr[y][x]=1;
 	    		}
     		}
@@ -83,24 +81,37 @@ public class Main {
     			int x=cur[1]+dix[i];
     			
     			if(y<0||y>=N||x<0||x>=N)continue;
-    			if(arr[y][x]==0)continue;
+    			
     			if(visit[y][x])continue;
     			visit[y][x]=true;
     			
-    			 qu.offer(new int[] {y,x});
+    			if(arr[y][x]==0) CheckIfLight.offer(new int[] {y,x});
+    			else qu.offer(new int[] {y,x});
     				
     			
     		}
     		
-    		
+    		if(qu.isEmpty()) {
+    			CheckTheRoomLight(qu);
+    		}
     	}
-    	if(ON) {
-    		cnt+=BFS();
-    	}
-    	return cnt;
     	
     }
- 
+    public static void CheckTheRoomLight(Queue<int[]> qu) {
+    	int size=CheckIfLight.size();
+    	int cnt=0;
+    	while(size!=cnt) {
+    		
+    		int[] cur=CheckIfLight.poll();
+    		if(arr[cur[0]][cur[1]]==1)qu.offer(cur);
+    		else {
+    			CheckIfLight.offer(cur);
+    			visit[cur[0]][cur[1]]=false;
+    		}
+    		cnt++;
+    	}
+    	
+    }
     
     public static void printArr() {
     	  for(int i=0;i<N;i++) {
