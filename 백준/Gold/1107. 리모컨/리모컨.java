@@ -43,21 +43,23 @@ public class Main {
         	arr[n]=1;
         }
         ans=Math.abs(100-N);
-        int idx=-1;
-     Loop:while(++idx<=999999) {
-        	String str=Integer.toString(idx);
-        	int len=str.length();
-        	for(int i=len-1;i>=0;i--) {
-        		int n=str.charAt(i)-'0';
-        		if(arr[n]==1)continue Loop;	
-        	}
-        
-        	ans=Math.min(ans, len+Math.abs(N-idx));
-        }
-
+        DFS(0,0);
        
         System.out.println(ans);
     }
-  
+    public static void DFS(int sum,int level) {
+    	if(level==7) return;
+    	
+    	if(level>0) {
+    		ans=Math.min(ans, level+Math.abs(N-sum));
+    	}
+    	
+    	for(int i=0;i<10;i++) {
+    		if(arr[i]==1)continue;
+    		DFS(sum*10+i,level+1);
+    	}
+    	
+    	
+    }
     
 }
