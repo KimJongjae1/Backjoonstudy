@@ -1,0 +1,12 @@
+SELECT COUNT(ID) AS FISH_COUNT
+FROM FISH_INFO
+WHERE FISH_TYPE = (SELECT FISH_TYPE
+                   FROM FISH_NAME_INFO
+                   WHERE FISH_NAME='BASS' 
+                  ) OR
+       FISH_TYPE =(SELECT FISH_TYPE
+                   FROM FISH_NAME_INFO
+                   WHERE FISH_NAME='SNAPPER' 
+                  )
+;
+ 
