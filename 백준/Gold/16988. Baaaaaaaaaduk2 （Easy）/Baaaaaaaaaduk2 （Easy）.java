@@ -89,7 +89,7 @@ public class Main {
     	qu.offer(new int[] {y,x});
     	
     	visit[y][x]=true;
-    	int cnt=1;
+
     	while(!qu.isEmpty()) {
     		int[] cur=qu.poll();
     		
@@ -101,7 +101,6 @@ public class Main {
     			visit[Y][X]=true;
     			
     			if(arr[Y][X]==2) {
-    				cnt++;
     				qu.offer(new int[] {Y,X});
     			}
     			else if(arr[Y][X]==1)continue;
@@ -145,12 +144,12 @@ public class Main {
         		int y=cur[0]+diy[i];
         		int x=cur[1]+dix[i];
         		if(y<0||y>=N||x<0||x>=M)continue;
- 
-        		if(arr[y][x]==2&&!visit[y][x]) {
-        			visit[y][x]=true;
+        		if(visit[y][x])continue;
+        		visit[y][x]=true;
+        		
+        		if(arr[y][x]==2) {
         			qu.offer(new int[] {y,x});
-        			cnt++;
-        			
+        			cnt++;        			
         		}
         		if(arr[y][x]==0)return 0;
         	}
