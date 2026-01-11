@@ -18,7 +18,7 @@ public class Main {
    static int R;
    static int idx;
    static  StringBuilder sb;
-   static char[][] arr;
+   static int[][] arr;
    static int[][] dp;
    static int sum;
    static int cnt;
@@ -26,7 +26,7 @@ public class Main {
    static boolean flag;
    static int[] diy= {0,-1,0,1,1,1,-1,-1};
    static int[] dix= {-1,0,1,0,1,-1,1,-1};
-   static boolean[][] visit;
+   static boolean[][][] visit;
    static List<Set<Integer>>[] list;
    static Set<Integer> set;  
    static Queue<int[]> qu;
@@ -41,96 +41,77 @@ public class Main {
 		    M=Integer.parseInt(st.nextToken());
 		    N=Integer.parseInt(st.nextToken());
 		    if(N==0)break; 
-		    arr=new char[N][M];
+		    arr=new int[N][M];
 		    map=new HashMap<>();	
 		    idx=1;
-		    index=new int[11];
+		    int id=0;
 
 		    for(int i=0;i<N;i++) {
 		    	String str=br.readLine();
 		    	for(int k=0;k<M;k++) {
-		    		arr[i][k]=str.charAt(k);
+		    		char a=str.charAt(k);
 		    		
-		    		if(arr[i][k]=='*') {
-		    			index[idx]=i*M+k;
-		    			map.put(i*M+k, idx++);
-
+		    		if(a=='*') {
+		    			arr[i][k]=idx++;
 		    		}
-		    		 if(arr[i][k]=='o') {
-		    			index[0]=i*M+k;
-		    			map.put(i*M+k, 0);
+		    		else if(a=='o') {
+		    			id=i*M+k;
+		    		 }else if(a=='x'){
+		    			 arr[i][k]=-1;
 		    		 }
 		    		
 		    	}
 		    }
-		   dp=new int[map.size()+1][map.size()+1];
-		   BFS(0);
-		   for(int dirt:map.keySet()) {
-			   BFS(map.get(dirt));
-		   }
-		   
-		  
-		   
+	
 		   ans=Integer.MAX_VALUE;
-		   for(int dirt:map.keySet()) {
-			   boolean[] v=new boolean[11];
-			   int id=map.get(dirt);
-			   v[id]=true;
-			   if(dp[0][id]==0)continue;
-			   BACK(id,1,dp[0][id],v);
-		   }
-		   
-		   if(ans==Integer.MAX_VALUE)System.out.println(-1);
-		   else System.out.println(ans);
+		   BFS(id);
+		 
+		 
+		   if(ans==Integer.MAX_VALUE)sb.append(-1+"\n");
+		   else sb.append(ans+"\n");
 		   
         }
+        System.out.println(sb);
     }
     public static void BFS(int id) {
-    	
+
     	qu=new LinkedList<>();
-    	qu.offer(new int[] {index[id]/M,index[id]%M,0});
-    	visit=new boolean[N][M];
-    	visit[index[id]/M][index[id]%M]=true;
-    	
+    	qu.offer(new int[] {id/M,id%M,0,0});
+    	visit=new boolean[N][M][1<<idx];
+    	visit[id/M][id%M][0]=true;
+    	int end=0;
+    	for(int i=1;i<idx;i++) {
+    		end+=1<<i;
+    	}
+    
     	while(!qu.isEmpty()) {
     		int[] cur=qu.poll();
+    		
+    		if(end==cur[2]) {
+    			ans=cur[3];
+    			return;
+    		}
     		
     		for(int i=0;i<4;i++) {
     			int Y=cur[0]+diy[i];
     			int X=cur[1]+dix[i];
     			if(Y<0||Y>=N||X<0||X>=M)continue;
-    			if(visit[Y][X])continue;
-    			   visit[Y][X]=true;
+    			if(visit[Y][X][cur[2]])continue;
+    			   visit[Y][X][cur[2]]=true;
     			   
-    			if(arr[Y][X]=='x')continue;
-    			if(arr[Y][X]=='*') {
-    			    int Tidx=map.get(Y*M+X);
-    			    dp[id][Tidx]=cur[2]+1;
+    			if(arr[Y][X]==-1)continue;
+    			int finish=cur[2];
+    			if(arr[Y][X]>0) {
+    				if((finish&(1<<arr[Y][X]))==0)
+    			    finish+=1<<arr[Y][X];
     			}
 
-    			  qu.offer(new int[] {Y,X,cur[2]+1});
+    			  qu.offer(new int[] {Y,X,finish,cur[3]+1});
     			
     		}
     	}
     	
     	
     }
-    public static void BACK(int cur,int cnt,int Cost,boolean[] v) {
-    	if(cnt==map.size()-1) {
-    		
-    		ans=Math.min(ans, Cost);
-    	}else {
-    		
-    		for(int dirt:map.keySet()) {
-    			int id=map.get(dirt);
- 
-    			if(v[id])continue;
-    			if(dp[cur][id]==0)continue;
-    			v[id]=true;
-    			BACK(id,cnt+1,Cost+dp[cur][id],v);
-    			v[id]=false;
-    		}
-    		
-    	}
-    }
+   
 }
