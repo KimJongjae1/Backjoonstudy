@@ -42,16 +42,11 @@ public class Main {
      		if(n==0)break;
      		list.add(n);
      	}
-     	if(list.size()==0) {
-     		System.out.println(0);
-     		return;
-     	}
      	
      	N=list.size();
      	dp=new int[N+3][5][5];
      	for(int w=0;w<5;w++)Arrays.fill(dp[0][w], Integer.MAX_VALUE);
      	dp[0][0][0]=0;
-     	
      	for(int i=1;i<=N;i++) {
      		
      		for(int w=0;w<5;w++)
@@ -59,13 +54,12 @@ public class Main {
      		
      		for(int k=0;k<=4;k++) {
      			for(int q=0;q<=4;q++) {
-     					
+     				
      					int next=list.get(i-1);
      					if(dp[i-1][k][q]==Integer.MAX_VALUE)continue;
-     					
      					dp[i][next][q]=Math.min(dp[i][next][q],send(k,next)+dp[i-1][k][q]);
      					dp[i][k][next]=Math.min(dp[i][k][next],send(q,next)+dp[i-1][k][q]);
-     						
+     
      			}
      		}
      	}
@@ -73,7 +67,8 @@ public class Main {
        ans=Integer.MAX_VALUE;
         for(int i=0;i<=4;i++) {
         	for(int k=0;k<=4;k++) {
-
+  
+        		if(dp[N][i][k]==0)continue;
         		ans=Math.min(ans, dp[N][i][k]);
         	}
         }
