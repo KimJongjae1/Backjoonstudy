@@ -6,11 +6,11 @@ import java.io.*;
 class Main {
     static class node{
         int idx;
-        Set<Integer> set;
+          List<Integer> set;
 
         node(int idx){
             this.idx=idx;
-            set=new HashSet<>();
+               set=new ArrayList<>();
         }
     }
     static class tube{
