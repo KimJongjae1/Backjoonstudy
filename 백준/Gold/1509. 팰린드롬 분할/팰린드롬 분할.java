@@ -15,6 +15,7 @@ public class Main {
    static boolean[] check;
     static String str;
     static List<Integer>[] list;
+    static boolean[][] dp1;
     public static void main(String[] args) throws Exception {
         BufferedReader br= new BufferedReader(new InputStreamReader(System.in));
         sb=new StringBuilder();
@@ -25,29 +26,32 @@ public class Main {
         for(int i=0;i<str.length();i++){
             list[i]=new ArrayList<>();
         }
-
-        for(int i=0;i<str.length()-1;i++){
-            char a=str.charAt(i);
-            for(int k=i+1;k<str.length();k++){
-                if(a==str.charAt(k)){
-                    if(pel(i,k))
-                        list[i].add(k);
+        dp1=new boolean[N][N];
+        for(int len=1;len<=str.length();len++){
+            for(int i=0;i+len-1<str.length();i++){
+                if(len==1){
+                    dp1[i][i]=true;
+                      list[i].add(i);
+                }
+                else if(len==2){
+                    if(str.charAt(i)==str.charAt(i+1)){
+                        dp1[i][i+1]=true;
+                        list[i].add(i+1);
+                    }
+                }
+                else{
+                    if(str.charAt(i)==str.charAt(i+len-1)&&dp1[i+1][i+len-2]){
+                        dp1[i][i+len-1]=true;
+                        list[i].add(i+len-1);
+                    }
+                    
+                    
                 }
             }
         }
         BFS();
     }
-    public static boolean pel(int i,int k){
-        int left=i+1;
-        int right=k-1;
-        while(left<right){
-            if(str.charAt(left)!=str.charAt(right))return false;
-            left++;
-            right--;
-        }
-
-        return true;
-    }
+ 
 
     public static void BFS(){
         Queue<int[]> qu=new LinkedList<>();
