@@ -1,0 +1,19 @@
+import java.util.*;
+import java.io.*;
+
+class Solution {
+    public String solution(String s) {
+        String answer = "";
+        
+        StringTokenizer st=new StringTokenizer(s);
+        List<Integer> list=new ArrayList<>();
+        while(st.hasMoreTokens()){
+            list.add(Integer.parseInt(st.nextToken()));
+        }
+        Collections.sort(list);
+        answer+=list.get(0);
+        answer+=" ";
+        answer+=list.get(list.size()-1);
+        return answer;
+    }
+}
