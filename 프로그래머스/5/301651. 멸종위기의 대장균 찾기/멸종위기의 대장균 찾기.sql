@@ -7,7 +7,8 @@ WITH RECURSIVE GEN as(
     
     SELECT a.ID, a.PARENT_ID, g.generation +1
     FROM ECOLI_DATA a
-    JOIN GEN g ON a.PARENT_ID=g.ID
+    JOIN GEN g
+    ON a.PARENT_ID=g.ID
 
 )
 
@@ -19,5 +20,3 @@ WHERE NOT EXISTS (SELECT 1
                  )
 GROUP BY g.generation
 ORDER BY g.generation;
-
-
