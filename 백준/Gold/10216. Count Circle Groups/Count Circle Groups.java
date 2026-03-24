@@ -49,7 +49,7 @@ class Main {
                     int A=find(i);
                      int B=find(k);
                      if(A==B)continue;
-                      parent[find(i)]=find(k);
+                      parent[A]=B;
                       ans--;
                  }
              }
