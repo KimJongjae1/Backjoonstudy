@@ -36,7 +36,7 @@ class Main {
                  list.add(new int[]{y,x,R});
                  parent[i]=i;
              }
-
+             ans=N;
              for(int i=0;i<list.size();i++){
                  int[] cur=list.get(i);
                  for(int k=i+1;k<list.size();k++){
@@ -46,16 +46,15 @@ class Main {
                       int range=a*a+b*b;
                        int dist=next[2]+cur[2];
                      if(range>dist*dist)continue;
-                     
+                    int A=find(i);
+                     int B=find(k);
+                     if(A==B)continue;
                       parent[find(i)]=find(k);
+                      ans--;
                  }
              }
-            set=new HashSet<>();
-            for(int i=0;i<N;i++){
-                set.add(find(parent[i]));
-              
-            }
-            sb.append(set.size()+"\n");
+           
+            sb.append(ans+"\n");
         }
         System.out.println(sb);
     }
