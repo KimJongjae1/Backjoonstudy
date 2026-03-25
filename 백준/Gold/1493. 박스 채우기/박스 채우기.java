@@ -1,1 +1,75 @@
-import java.io.*; import java.util.StringTokenizer; public class Main { static int[] box, cube; static int n; static boolean f = true; public static void main(String[] args) throws IOException{ BufferedReader br = new BufferedReader(new InputStreamReader(System.in)); StringTokenizer st = new StringTokenizer(br.readLine()); box = new int[3]; for(int i=0; i<3; i++) { box[i] = Integer.parseInt(st.nextToken()); } n = Integer.parseInt(br.readLine()); cube = new int[n]; for(int i=0; i<n; i++) { st = new StringTokenizer(br.readLine()); cube[Integer.parseInt(st.nextToken())] = Integer.parseInt(st.nextToken()); } int res = divide(box[0], box[1], box[2]); if(f) { System.out.println(res); }else { System.out.println(-1); } } static int divide(int l, int w, int h) { if(l == 0 || w == 0 || h == 0 ) return 0; int k = Math.min(l, Math.min(w, h)); int t = (int)(Math.log(k)/Math.log(2))+1; while(t--> 0) { if(n <= t || cube[t] <= 0)continue; cube[t]--; int size = (int)Math.pow(2, t); return divide(l-size, w, h) + divide(size, w-size, h) + divide(size, size, h-size)+1; } f = false; return -1; } }
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+
+class Main {
+    static int N;
+    static int M;
+    static int K;
+    static int[][] dp;
+     static int[] arr;
+     static List<int[]> list;
+     static boolean[] visit;
+     static int idx;
+    static int max;
+     static StringBuilder sb;
+     static Set<Integer> set;
+     static int ans;
+     static TreeMap<Integer,Integer> map;
+    public static void main(String[] args)throws IOException {
+         BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+         sb=new StringBuilder();
+
+         StringTokenizer st=new StringTokenizer(br.readLine());
+         N=Integer.parseInt(st.nextToken());
+         M=Integer.parseInt(st.nextToken());
+         K=Integer.parseInt(st.nextToken());
+
+        int n=Integer.parseInt(br.readLine());
+ 
+        arr=new int[21];
+        max=0;
+        for(int i=0;i<n;i++){
+            st=new StringTokenizer(br.readLine());
+            int a=Integer.parseInt(st.nextToken());
+            int b=Integer.parseInt(st.nextToken());
+            arr[a]=b;
+            max=Math.max(max,a);
+        }
+        ans=place(N,M,K);
+        System.out.println(ans);
+    }
+    public static int place(int y,int x,int z){
+  
+               if (y == 0 || x == 0 || z == 0) return 0;
+        
+            int min = Math.min(y, Math.min(x, z));
+            int t = (int)(Math.log(min) / Math.log(2));
+            
+            for (int i = t; i >= 0; i--) {
+                if (arr[i] == 0) continue;
+        
+                int dist = 1 << i;
+        
+                arr[i]--;
+                
+    
+   
+                int a = place(y - dist, x, z);
+                if (a < 0) return -1;
+        
+                int b = place(dist, x - dist, z);
+                if (b < 0) return -1;
+                
+        
+                 int c = place(dist, dist, z - dist);
+                if (c < 0) return -1;
+        
+                return a + b + c + 1;
+            }
+        
+            return -1;
+        }
+ 
+}
