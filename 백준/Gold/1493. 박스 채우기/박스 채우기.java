@@ -1,0 +1,72 @@
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+
+class Main {
+    static int N;
+    static int M;
+    static int K;
+    static int[][] dp;
+     static int[] arr;
+     static List<int[]> list;
+     static boolean[] visit;
+     static int idx;
+    static int max;
+     static StringBuilder sb;
+     static Set<Integer> set;
+     static int ans;
+     static TreeMap<Integer,Integer> map;
+    public static void main(String[] args)throws IOException {
+         BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+         sb=new StringBuilder();
+
+         StringTokenizer st=new StringTokenizer(br.readLine());
+         N=Integer.parseInt(st.nextToken());
+         M=Integer.parseInt(st.nextToken());
+         K=Integer.parseInt(st.nextToken());
+
+        int n=Integer.parseInt(br.readLine());
+ 
+        arr=new int[21];
+        max=0;
+        for(int i=0;i<n;i++){
+            st=new StringTokenizer(br.readLine());
+            int a=Integer.parseInt(st.nextToken());
+            int b=Integer.parseInt(st.nextToken());
+            arr[a]=b;
+            max=Math.max(max,a);
+        }
+        ans=place(N,M,K);
+        System.out.println(ans);
+    }
+    public static int place(int y,int x,int z){
+  
+        if(y==0||x==0||z==0) return 0;
+
+        int ret=-1;
+        for(int i=max;i>=0;i--){
+            if(arr[i]==0)continue;
+            
+            int dist=(int)Math.pow(2,i);
+            if(dist>y||dist>x||dist>z)continue;
+            
+            arr[i]--;
+            int a=place(y-dist,x,dist);
+            if(a<0)return -1;
+            int b=place(dist,x-dist,dist);
+            if(b<0)return -1;
+            int c=place(y,x,z-dist);
+             if(c<0)return -1;
+            
+            
+            return a+b+c+1;
+           
+        
+        }
+        return ret;
+       
+    }
+ 
+ 
+}
