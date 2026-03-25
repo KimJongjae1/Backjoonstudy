@@ -16,6 +16,7 @@ class Main {
      static StringBuilder sb;
      static Set<Integer> set;
      static int ans;
+    static boolean flag;
      static TreeMap<Integer,Integer> map;
     public static void main(String[] args)throws IOException {
          BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
@@ -46,26 +47,32 @@ class Main {
         
             int min = Math.min(y, Math.min(x, z));
             int t = (int)(Math.log(min) / Math.log(2));
-            
+            if(flag)return -1;
             for (int i = t; i >= 0; i--) {
                 if (arr[i] == 0) continue;
         
                 int dist = 1 << i;
         
                 arr[i]--;
-                
-    
-   
                 int a = place(y - dist, x, z);
-                if (a < 0) return -1;
+                if (a < 0){
+                    flag=true;
+                   return -1;
+                } 
         
                 int b = place(dist, x - dist, z);
-                if (b < 0) return -1;
+                if (b < 0) {
+                   flag=true;
+                   return -1;
+                } 
                 
         
                  int c = place(dist, dist, z - dist);
-                if (c < 0) return -1;
-        
+                if (c < 0) {
+                    flag=true;
+                   return -1;
+                } 
+                if(flag)return -1;
                 return a + b + c + 1;
             }
         
