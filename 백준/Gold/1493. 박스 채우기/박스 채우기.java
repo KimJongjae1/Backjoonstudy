@@ -42,31 +42,32 @@ class Main {
     }
     public static int place(int y,int x,int z){
   
-        if(y==0||x==0||z==0) return 0;
-
-        int ret=-1;
-        for(int i=max;i>=0;i--){
-            if(arr[i]==0)continue;
-            
-            int dist=(int)Math.pow(2,i);
-            if(dist>y||dist>x||dist>z)continue;
-            
-            arr[i]--;
-            int a=place(y-dist,x,dist);
-            if(a<0)return -1;
-            int b=place(dist,x-dist,dist);
-            if(b<0)return -1;
-            int c=place(y,x,z-dist);
-             if(c<0)return -1;
-            
-            
-            return a+b+c+1;
-           
+               if (y == 0 || x == 0 || z == 0) return 0;
         
+            int min = Math.min(y, Math.min(x, z));
+            int t = (int)(Math.log(min) / Math.log(2));
+            
+            for (int i = t; i >= 0; i--) {
+                if (arr[i] == 0) continue;
+        
+                int dist = 1 << i;
+        
+                arr[i]--;
+        
+                int a = place(y - dist, x, dist);
+                if (a < 0) return -1;
+        
+                int b = place(dist, x - dist, dist);
+                if (b < 0) return -1;
+                
+        
+                int c = place(y, x, z - dist);
+                if (c < 0) return -1;
+        
+                return a + b + c + 1;
+            }
+        
+            return -1;
         }
-        return ret;
-       
-    }
- 
  
 }
