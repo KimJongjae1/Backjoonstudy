@@ -36,47 +36,21 @@ class Main {
             int a=Integer.parseInt(st.nextToken());
             int b=Integer.parseInt(st.nextToken());
             arr[a]=b;
-            max=Math.max(max,a);
         }
-        ans=place(N,M,K);
-        System.out.println(ans);
+        long use=0;
+        
+        for(int i=n-1;i>=0;i--){
+            use*=8;
+
+            long CUBE=(long)(N>>i)*(M>>i)*(K>>i)-use;
+            long NEWCUBE=Math.min(CUBE,(long)arr[i]);
+
+            use+=NEWCUBE;
+            ans+=NEWCUBE;
+        }
+        if(use==(long)N*M*K)System.out.println(ans);
+        else System.out.println(-1);
     }
-    public static int place(int y,int x,int z){
-  
-               if (y == 0 || x == 0 || z == 0) return 0;
-        
-            int min = Math.min(y, Math.min(x, z));
-            int t = (int)(Math.log(min) / Math.log(2));
-            if(flag)return -1;
-            for (int i = t; i >= 0; i--) {
-                if (arr[i] == 0) continue;
-        
-                int dist = 1 << i;
-        
-                arr[i]--;
-                int a = place(y - dist, x, z);
-                if (a < 0){
-                    flag=true;
-                   return -1;
-                } 
-        
-                int b = place(dist, x - dist, z);
-                if (b < 0) {
-                   flag=true;
-                   return -1;
-                } 
-                
-        
-                 int c = place(dist, dist, z - dist);
-                if (c < 0) {
-                    flag=true;
-                   return -1;
-                } 
-                if(flag)return -1;
-                return a + b + c + 1;
-            }
-        
-            return -1;
-        }
+ 
  
 }
