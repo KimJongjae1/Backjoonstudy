@@ -1,41 +1,52 @@
 import java.util.*;
+import java.lang.*;
 import java.io.*;
 
-public class Main {
-	static List<Long> list = new ArrayList<>();
-	static int N;
-	static int count = 0;
+ 
+class Main {
+    static int N;
+    static int M;
+    static int K;
+    static int[][][] dp;
+     static int[] arr;
+     static List<Long> list;
+     static boolean[] visit;
+     static int idx;
+     static StringBuilder sb;
+     static Set<Integer> set;
+     static int ans;
+     static int[] diy= {-1,1,0,0};
+     static int[] dix= {0,0,-1,1};
+     static boolean flag;
+    public static void main(String[] args)throws IOException {
+         BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+         sb=new StringBuilder();
+  
 
-	public static void main(String[] args) throws Exception {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-		N = Integer.parseInt(br.readLine());
-		if(N <= 10) {
-			System.out.print(N);
-			return;
-		} else if (N >= 1023) {
-			System.out.print(-1);
-			return;
-		}
-
-		for(int i = 0; i < 10; i++) {
-			DFS(i);
-		}
-
-		Collections.sort(list);
-		System.out.print(list.get(N));
-	} // End of main
-
-	private static void DFS(long num) {		
-		list.add(num);		
-		long modValue = num % 10;
-		if(modValue == 0) {
-			return;
-		}
-		
-		for(long i=modValue-1; i>=0; i--) {
-			long newValue = num * 10 + i;
-			DFS(newValue);
-		}
-	} // End of DFS
-} // End of Main class
+	       StringTokenizer st=new StringTokenizer(br.readLine());
+	       N=Integer.parseInt(st.nextToken());
+	       if(N>=1023) {
+	    	   System.out.println(-1);
+	    	   return;
+	       }
+	       list=new ArrayList<>();
+	       
+	       for(int i=0;i<=9;i++) {
+	    	   BACK(1,i);
+	       }
+	       Collections.sort(list);
+	       System.out.println(list.get(N));
+	       
+    }
+    public static void BACK(int level,long n) {
+    	if(level==11)return;
+    	
+    	int m=(int)n%10-1;
+    	list.add(n);
+    	for(int i=m;i>=0;i--) {
+    		long NEW=n*10+i;
+    		BACK(level+1,NEW);
+    	}
+    	
+    }
+ }
