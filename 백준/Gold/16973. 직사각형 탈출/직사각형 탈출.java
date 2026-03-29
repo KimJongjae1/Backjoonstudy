@@ -9,7 +9,7 @@ class Main {
     static int K;
     static int[][][] dp;
      static int[][] arr;
-     static List<Integer>[] list;
+     static List<Integer> list;
      static boolean[][] visit;
      static int idx;
      static StringBuilder sb;
@@ -29,11 +29,12 @@ class Main {
 
 
 	       arr=new int[N][M];
-	          
+	       list=new ArrayList<>();
 	       for(int i=0;i<N;i++) {
 	    	   st=new StringTokenizer(br.readLine());
 	    	   for(int k=0;k<M;k++) {
 	    		   arr[i][k]=Integer.parseInt(st.nextToken());
+	    		   if(arr[i][k]==1)list.add(i*M+k);
 	    	   }
 	       }
 	       
@@ -44,34 +45,37 @@ class Main {
 	       int Sc=Integer.parseInt(st.nextToken())-1;
 	       int Fr=Integer.parseInt(st.nextToken())-1;
 	       int Fc=Integer.parseInt(st.nextToken())-1;
-	       for(int i=0;i<N-H+1;i++) {
-	    	   for(int k=0;k<M-W+1;k++) {
-	    		   if(arr[i][k]==1)continue;
-	    		   if(!check(i,k,H,W))
-	    			   arr[i][k]=1;
-	    	   }
+	       
+	       for(int next:list) {
+	    	   int y=next/M;
+	    	   int x=next%M;
+	    
+	    	   check(y,x,H,W);
 	       }
-	      for(int i=N-H+1;i<N;i++) 
-	    	  Arrays.fill(arr[i], 1);
-	      
-	       for(int i=0;i<N-1;i++) {
-	    	   for(int k=M-W+1;k<M;k++) {
-	    		   arr[i][k]=1;
-	    	   }
-	       }
+	       for(int i=N-H+1;i<N;i++) 
+		    	  Arrays.fill(arr[i], 1);
+		      
+		       for(int i=0;i<N-1;i++) {
+		    	   for(int k=M-W+1;k<M;k++) {
+		    		   arr[i][k]=1;
+		    	   }
+		       }
+	     
 	    	   
 	    	   
 	       BFS(Sr,Sc,Fr,Fc);
 	      
     }
-    public static boolean check(int y,int x,int H,int W) {
+    public static void check(int y,int x,int H,int W) {
     	
-    	for(int i=y;i<y+H;i++) {
-    		for(int k=x;k<x+W;k++) {
-    			if(arr[i][k]==1)return false;
+    	for(int i=y-H+1;i<=y;i++) {
+    		if(i<0)continue;
+    		for(int k=x-W+1;k<=x;k++) {
+    			if(k<0)continue;
+    			arr[i][k]=1;
     		}
     	}
-    	return true;
+    	
     }
     public static void BFS(int Sr,int Sc,int Fr,int Fc) {
     	Queue<int[]> qu=new LinkedList<>();
