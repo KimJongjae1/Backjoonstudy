@@ -7,7 +7,7 @@ class Main {
     static int N;
     static int M;
     static int K;
-    static int[][][] dp;
+    static int[][] dp;
      static int[][] arr;
      static List<Integer>[] list;
      static boolean[] visit;
@@ -25,35 +25,36 @@ class Main {
          N=Integer.parseInt(st.nextToken());
          M=Integer.parseInt(st.nextToken());
          K=Integer.parseInt(st.nextToken());
-         dp=new int[N][M][K+1];
+         dp=new int[N][M];
         arr=new int[N][M];
         for(int i=0;i<N;i++){
             String str=br.readLine();
             for(int k=0;k<M;k++){
                 arr[i][k]=str.charAt(k)-'0';
-                for(int q=0;q<=K;q++){
-                      dp[i][k][q]=Integer.MAX_VALUE;
-                }
+             
+                dp[i][k]=11;
+                
             }
         }
+        ans=Integer.MAX_VALUE;
         BFS();
-        int max=Integer.MAX_VALUE;
-        for(int i=0;i<=K;i++){
-            max=Math.min(max,dp[N-1][M-1][i]);
-        }
-        if(max==Integer.MAX_VALUE)System.out.println(-1);
-        else System.out.println(max);
+        if(ans==Integer.MAX_VALUE)System.out.println(-1);
+        else System.out.println(ans);
+        
     }
     public static void BFS(){
         Queue<int[]> qu=new LinkedList<>();
-        qu.offer(new int[]{0,0,K,1});
-        dp[0][0][K]=1;
+        qu.offer(new int[]{0,0,0,1});
+        dp[0][0]=0;
         while(!qu.isEmpty()){
             int[] cur=qu.poll();
             int breakWall=cur[2];
 
-           if(cur[3]>dp[cur[0]][cur[1]][breakWall])continue;
-  
+            if(cur[0]==N-1&&cur[1]==M-1){
+                ans=Math.min(ans,cur[3]);
+                continue;
+            }
+            
             for(int i=0;i<4;i++){
                 int y=cur[0]+diy[i];
                 int x=cur[1]+dix[i];
@@ -61,34 +62,32 @@ class Main {
  
                 if(cur[3]%2==1){//낮
                     if(arr[y][x]==1){
-                        if(breakWall==0)continue;
+                        if(breakWall==K)continue;
                         
-                        if(dp[y][x][breakWall-1]<=cur[3]+1)continue;
-                        dp[y][x][breakWall-1]=cur[3]+1;
-                        qu.offer(new int[]{y,x,breakWall-1,cur[3]+1});
+                        if(dp[y][x]<=breakWall+1)continue;
+                        dp[y][x]=breakWall+1;
+                        qu.offer(new int[]{y,x,breakWall+1,cur[3]+1});
                     }
                     else{
-                        if(dp[y][x][breakWall]<=cur[3]+1)continue;
-                        dp[y][x][breakWall]=cur[3]+1;
+                        if(dp[y][x]<=breakWall)continue;
+                        dp[y][x]=breakWall;
                         qu.offer(new int[]{y,x,breakWall,cur[3]+1});
                     }
                 }
                 else{
                      if(arr[y][x]==1){
-                        if(breakWall==0)continue;
+                        if(breakWall==K)continue;
 
-                        if(dp[y][x][breakWall-1]<=cur[3]+2)continue;
-                        dp[y][x][breakWall-1]=cur[3]+2;
-                        qu.offer(new int[]{y,x,breakWall-1,cur[3]+2});
+                        qu.offer(new int[]{cur[0],cur[1],breakWall,cur[3]+1});
                     }
                     else{
-                        if(dp[y][x][breakWall]<=cur[3]+1)continue;
-                        dp[y][x][breakWall]=cur[3]+1;
+                        if(dp[y][x]<=breakWall)continue;
+                        dp[y][x]=breakWall;
                         qu.offer(new int[]{y,x,breakWall,cur[3]+1});
                     }
                 } 
             }
         }
- 
+
     }
 }
