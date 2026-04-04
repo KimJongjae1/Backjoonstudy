@@ -76,7 +76,14 @@ class Main {
 	       else System.out.println(min);   
     }
     public static void BFS() {
-    	Queue<int[]> qu=new LinkedList<>();
+    	PriorityQueue<int[]> qu=new PriorityQueue<>(new Comparator<int[]>() {
+    		@Override
+    		public int compare(int[] a,int[] b) {
+    			return a[1]-b[1];
+    		}
+    	});
+    	
+    	
     	start(qu);
     	while(!qu.isEmpty()) {
     		int[] cur=qu.poll();
