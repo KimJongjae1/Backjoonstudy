@@ -51,11 +51,12 @@ class Main {
         while(!qu.isEmpty()){
             int[] cur=qu.poll();
 
+            if(dp[cur[0]][cur[1]][cur[2]]<cur[3])continue;
             if(cur[0]==N-1&&cur[1]==M-1){
                 System.out.println(cur[3]);
                 return;
             }
-            
+          
             for(int i=0;i<4;i++){
                 int y=cur[0]+diy[i];
                 int x=cur[1]+dix[i];
