@@ -65,6 +65,7 @@ class Main {
                 parent[p2]=p1;
                 ans+=dist;
                 cnt++;
+                if(cnt==N)break;
             }
         }
         
