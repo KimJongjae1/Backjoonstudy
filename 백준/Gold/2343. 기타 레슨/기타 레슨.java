@@ -50,20 +50,15 @@ class Main {
         int cnt=0;
         for(int i=0;i<N;i++){
             if(arr[i]>mid)return Integer.MAX_VALUE;
-            sum+=arr[i];
-            if(sum>mid){
-                sum=arr[i];
-                cnt++;
-            }else if(mid==sum){
-                cnt++;
+           
+            if(sum+arr[i]>mid){
                 sum=0;
-                continue;
-            }
-
-            if(i==N-1)
                 cnt++;
+            } 
+            sum+=arr[i];
             
         }
+        if(sum>0)cnt++;
         return cnt;
     }
 }
