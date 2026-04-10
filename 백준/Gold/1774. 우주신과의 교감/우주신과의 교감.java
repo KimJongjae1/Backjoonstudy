@@ -27,22 +27,23 @@ class Main {
         N=Integer.parseInt(st.nextToken());
         M=Integer.parseInt(st.nextToken());   
         parent=new int[N+1];
-        set=new HashSet<>();
         List<long[]> temp=new ArrayList<>();
+        
         for(int i=1;i<=N;i++){
             parent[i]=i;
-            set.add(i);
             st=new StringTokenizer(br.readLine());
             int x=Integer.parseInt(st.nextToken());
             int y=Integer.parseInt(st.nextToken());
             temp.add(new long[]{y,x,i});
         }
+        
         PriorityQueue<long[]> pq=new PriorityQueue<>(new Comparator<long[]>(){
             @Override
             public int compare(long[] a,long[] b){
                 return Long.compare(a[2],b[2]);
             }
         });
+        
         for(int i=0;i<N;i++){
             long[] p1=temp.get(i);
             for(int k=i+1;k<N;k++){
@@ -52,7 +53,7 @@ class Main {
                 pq.offer(new long[]{p1[2],p2[2],dist});
             }
         }
-  
+        int cnt=0;
         for(int i=0;i<M;i++){
             st=new StringTokenizer(br.readLine());
             int a=Integer.parseInt(st.nextToken());
@@ -61,8 +62,8 @@ class Main {
             int B=find(b);
             if(A==B)continue;
             parent[B]=A;
-    
-            set.remove(B);
+            cnt++;
+
         }
 
         double ans=0;
@@ -75,8 +76,8 @@ class Main {
 
             parent[B]=A;
             ans+=Math.sqrt(line[2]);
-            set.remove(B);
-            if(set.size()==1)break;
+            cnt++;
+            if(cnt==N-1)break;
   
         }
 
