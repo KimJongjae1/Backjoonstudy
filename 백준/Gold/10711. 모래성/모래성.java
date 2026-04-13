@@ -37,9 +37,7 @@ class Main {
                 int a=str.charAt(k)-'0';
                 if(a>=0&&a<=9){
                    arr[i][k]=copy[i][k]=a; 
-                    if(arr[i][k]<9)
-                   qu.offer(new int[]{i,k});
-                }
+                }else qu.offer(new int[]{i,k});
             }
         }
 
@@ -50,8 +48,9 @@ class Main {
        
         int ret=0;
        while(true){
-            int size=qu.size();
-           flag=false;
+           
+          int size=qu.size();
+           
            for(int k=0;k<size;k++){
                int[] cur=qu.poll();
 
@@ -59,38 +58,25 @@ class Main {
                 int y=cur[0]+diy[i];
                 int x=cur[1]+dix[i];
                 if(y<0||y>=N||x<0||x>=M)continue;
-                if(arr[y][x]<=0||arr[y][x]==9)continue;
-     
-                if(IsDestroyed(y,x)){
+                if(arr[y][x]==0||arr[y][x]==9)continue;
+                arr[y][x]--;  
+                   
+                if(arr[y][x]==0) 
                     qu.offer(new int[]{y,x});
-                    arr[y][x]=-1;
-                    flag=true;
-                }
+                
+                
                 
              }
                
            }
-           if(!flag) break;
+            if(qu.isEmpty())break;
            ret++;
-            for(int[] c:qu){
-                arr[c[0]][c[1]]=0;
-            }
+          
            
        }
         return ret;
     }
-    public static boolean IsDestroyed(int y,int x){
-        
-        int cnt=0;
-        for(int i=0;i<8;i++){
-            int Y=y+diy[i];
-            int X=x+dix[i];
-            if(Y<0||Y>=N||X<0||X>=M)continue;
-            if(arr[Y][X]==0)cnt++;
-        }
-        if(cnt>=arr[y][x])return true;
-        else return false;
-    }
+
 
    
 }
