@@ -22,6 +22,8 @@ class Main {
     static int roma;
     static int max;
     static int cnt;
+    static int[] indegree;
+
     public static void main(String[] args)throws IOException {
         BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
         sb=new StringBuilder();
@@ -31,6 +33,7 @@ class Main {
         M=Integer.parseInt(br.readLine());
         list=new ArrayList[N+1];
         reverse=new ArrayList[N+1];
+        indegree=new int[N+1];
         for(int i=1;i<=N;i++){
             list[i]=new ArrayList<>();
             reverse[i]=new ArrayList<>();
@@ -42,41 +45,37 @@ class Main {
             int p=Integer.parseInt(st.nextToken());
             list[a].add(new int[]{b,p});
             reverse[b].add(new int[]{a,p,i});
+            indegree[b]++;
         }   
         st=new StringTokenizer(br.readLine());
         ham=Integer.parseInt(st.nextToken());
         roma=Integer.parseInt(st.nextToken());
-        BFS();
+        dp=new int[N+1];
+        Queue<Integer> qu=new LinkedList<>();
+        for(int i=1;i<=N;i++){
+            qu.offer(i);
+        }
+        while(!qu.isEmpty()){
+            int cur=qu.poll();
+
+            for(int[] next:list[cur]){
+                indegree[next[0]]--;
+
+                dp[next[0]]=Math.max(dp[next[0]],next[1]+dp[cur]);
+
+                if(indegree[next[0]]==0)
+                    qu.offer(next[0]);
+            }
+        }
         BACK();
-        System.out.println(max);
+        System.out.println(dp[roma]);
         System.out.println(cnt);
     }
-    public static void BFS(){
-        Queue<int[]> qu=new LinkedList<>();
-        qu.offer(new int[]{ham,0});
-        dp=new int[N+1];
-        dp[roma]=0;
-        while(!qu.isEmpty()){
-            int[] cur=qu.poll();
-            int cost=cur[1];
-
-
-            if(cur[0]==roma){
-                if(max<cost) max=cost; 
-                continue;
-            }
-
-             for(int[] next:list[cur[0]]){
-                 if(dp[next[0]]<next[1]+cost){
-                     dp[next[0]]=next[1]+cost;
-                     qu.offer(new int[]{next[0],next[1]+cost});
-                 }
-             }
-        }
-    }
+ 
+    
     public static void BACK(){
         Queue<int[]> qu=new LinkedList<>();
-        qu.offer(new int[]{roma,max});     
+        qu.offer(new int[]{roma,dp[roma]});     
         visit=new boolean[M];
         while(!qu.isEmpty()){
             int[] cur=qu.poll();
