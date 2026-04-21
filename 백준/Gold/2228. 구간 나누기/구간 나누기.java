@@ -27,22 +27,26 @@ class Main {
         arr=new int[N+1];
         dp=new int[N+1][M+1];
         int[] sum=new int[N+1];
-        Arrays.fill(dp[0],-32768 * 101);
+ 
         for(int i=1;i<=N;i++){
             arr[i]=Integer.parseInt(br.readLine());
             sum[i]=sum[i-1]+arr[i];
-         
+
         }
-        dp[0][0]=0;
-        for(int i=1;i<=N;i++){
+        for(int i=0;i<=N;i++){
+            for(int k=1;k<=M;k++){
+                dp[i][k]=Integer.MIN_VALUE/2;
+            }
+        }
+        dp[1][1]=arr[1];
+        for(int i=2;i<=N;i++){
+            
             for(int k=1;k<=M;k++){
                 dp[i][k]=dp[i-1][k];
-                for(int q=i;q>0;q--){
-                    if(q-2>=0)
-                    dp[i][k]=Math.max(dp[i][k],sum[i]-sum[q-1]+dp[q-2][k-1]);
-                    else if (k == 1 && q == 1) {
-                        dp[i][k] = Math.max(dp[i][k], sum[i]);
-                    }
+                 if(k==1) dp[i][1] = Math.max(dp[i][1], sum[i]);
+                
+                for(int q=0;q<=i-2;q++){
+                    dp[i][k]=Math.max(dp[i][k],sum[i]-sum[q+1]+dp[q][k-1]); 
                 }
             }
         }
